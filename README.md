@@ -116,8 +116,16 @@ volumes:
 
 - Truy cập sub-domain3 để cấu hình n8n:
   + tạo tài khoản admin : nhớ điền đúng email
+    <img width="960" height="509" alt="Screenshot_6" src="https://github.com/user-attachments/assets/44c757d1-fe78-441d-91ea-f2ba4b8ec961" />
+
   + Send me a Licence key, bước này điền đủ thông tin, làm chậm sẽ thấy mục gửi License key về mail (n8n sẽ gửi email KEY cho dùng), check email để lấy KEY
+    <img width="1919" height="1014" alt="image" src="https://github.com/user-attachments/assets/229664fe-a92a-4f39-a70a-1f7d4e7719d5" />
+    
+    <img width="1919" height="1022" alt="image" src="https://github.com/user-attachments/assets/f2731341-41d2-4821-9099-f7b124b84929" />
+
   + Activate License key: vào trang chủ => SETTING (góc dưới trái) => Usage and plan => Enter activation key: paste key từ email vào đây => Activate => sẽ nhận đc thông báo (góc dưới phải) Your Registered Community Edition has been successfully activated.
+    <img width="1919" height="1018" alt="image" src="https://github.com/user-attachments/assets/1d24779f-94c0-48b6-990f-6157f06d235e" />
+
   + Create workflow  (home page => overview => Create workflow)
   + Add trigger node: tìm node: Telegram => OnMessage  ; cấu hình Credential: Set up Credential => cần Nhập Access Token
     + Access Token thì lấy ở Telegram qua việc chát với @BotFather
