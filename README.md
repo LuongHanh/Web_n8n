@@ -131,12 +131,19 @@ volumes:
     + Access Token thì lấy ở Telegram qua việc chát với @BotFather
     + Cần chát với bot @BotFather để đẻ ra bot mới của riêng mình. bot này sẽ là nơi nhận lệnh (promt) để AI sinh html => n8n sẽ dùng html này để đăng bài lên wp
     + Sau khi tạo bot mới cần copy lấy Token, và chát lần đầu với bot mới này, nội dung bất kỳ (bước này quan trọng!)
+  Đã kết nối thành công:
+  <img width="1919" height="1008" alt="image" src="https://github.com/user-attachments/assets/35fbc5c9-ae34-4506-abde-880093c4c9f5" />
+
   + Add (nối tiếp vào sau node Telegram Trigger) node: AI Google Gemini => Message a model => Set up Credential => cần Nhập API KEY
     + Lấy API KEY tại trang: https://aistudio.google.com  => https://aistudio.google.com/api-keys
     + cần tạo project mới, sẽ lấy được API KEY
     + Nhập API Key lên giao diện n8n
     + kéo thả **nội dung đã chát** với bot của telegram (phía bên trái) vào **nội dung phần PROMPT** kết quả được {{ $json.message.text }}, cần gõ thêm vào sau {{ $json.message.text }} để promt dài hơn : vd ({{ $json.message.text }}. Kết quả sinh ra ở định dạng HTML+CSS để tôi dùng HTML+CSS này tạo bài viết cho wordpress.)
+    <img width="1919" height="1013" alt="image" src="https://github.com/user-attachments/assets/020401e8-e55c-4bb6-9be3-4b76e92bf213" />
+
     + Turn on Output Content as JSON : để kết quả trả về dạng json
+    <img width="1919" height="1000" alt="image" src="https://github.com/user-attachments/assets/022ac01a-c481-4f64-aa37-3b8a0b52175c" />
+
     + Có thể thử nghiệm các thành phần khác trong Options (add Options: System message, ...) => đưa ra cái nào đáng dùng?
   + Add (nối tiếp vào sau node Message a model) node: Code in JavaScript
     + Code js ở dạng này, có thể phải thay đổi tuỳ theo json AI trả về.
@@ -153,36 +160,36 @@ return {
   content: cleanData.post_content
 };
 ```
+<img width="1919" height="984" alt="image" src="https://github.com/user-attachments/assets/804cb48d-3a38-4c4f-827f-8497af6a6327" />
 
   + Add (nối tiếp vào sau node Code in JavaScript) node: WordPress => Create a Post
     + Set up Credential: vào wp tại url: https://sub-domain1/wp-admin  => vào mục Tài Khoản => chọn user đã tạo lúc setup wordpress => Mật khẩu ứng dụng => Nhập n8n và bấm "Thêm mật khẩu ứng dụng" => copy chuỗi 24 kí tự : Đây là mật khẩu ứng dụng => paste vào mục Password của n8n Credential
+    <img width="1919" height="991" alt="image" src="https://github.com/user-attachments/assets/9e53c6d8-6d93-421b-8ada-065b4d5e9461" />
+
     + Wordpress URL: điền giá trị https://sub-domain1/   (giá trị này cũng khai báo trong biến môi trường WEBHOOK_URL của n8n)
     + Ignore SSL Issues (Insecure): TURN ON
     + Cấu hình node Create a Post: bấm nút Execute previous nodes để thấy trường giá trị của node trước trả về, kéo nội dung phần title (bên trái) vào trường title, tương tự kéo nội dung content vào content
     + Add field (Thêm thuộc tính): Status == Publish (bài đăng sẽ ở trạng thái xuất bản ngay lập tức, mặc định nó ở giá trị Draft bản nháp)
+    <img width="1919" height="1002" alt="image" src="https://github.com/user-attachments/assets/a11ba35b-8b06-4c4b-9e00-97b92b36c838" />
+
 + PUBLISH flow (góc trên phải) Nút này thực hiện việc xuất bản flow <=> flow sẽ tự động thực thi khi thoả mãn điều kiện trigger
-   
+   <img width="1919" height="1007" alt="image" src="https://github.com/user-attachments/assets/0e12cf92-f14d-4a9e-8738-fb6626b12c10" />
+
 + Kết quả cuối cùng cần đặt được:
   + từ điện thoại, chát với telegram bot
+    
+    <img width="606" height="1280" alt="image" src="https://github.com/user-attachments/assets/15adb457-823c-4df7-8c55-6e433cf15729" />
+
   + nội dung chát được tự động gửi tới node Telegram trigger => Gửi tới Google Gemini Message a model (bản chất là gửi Prompt) : Nhận về json kết quả của Prompt => Gửi sang node Code in JavaScript để tách tiêu đề và nội dung => gửi đến node WordPress để Create a Post(đăng bài) với tiêu đề và nội dung từ node trước gửi sang.
   + f5 wordpress để thấy bài viết mới đã lên sóng.
+    
+  <img width="1919" height="1007" alt="image" src="https://github.com/user-attachments/assets/257f9986-ebc4-4388-a1ec-815831f7f3b5" />
 
-+ Chụp ảnh quá trình thao tác/cấu hình/các kết quả trung gian đạt được
-+ Nhận xét thành quả đạt được!!!
+## Nhận xét thành quả đạt được
++ Đã thực hiện đủ các bước, để ra kết quả đạt yêu cầu
++ Trong quá trình thực hiện thì gặp rất nhiều lỗi: Trong đó có lỗi bị treo/hỏng DNS của máy ubuntu do là không `sudo docker-compose down` trước khi tắt máy ảo. Em đã tắt máy ảo mà không thèm tắt docker dẫn tới việc lỗi DNS và không bật Tunnel lên được mặc dù đã cấu hình đúng tất cả. Em đã phải tạo lại 2 máy ảo ubuntu mới ngộ ra cái lỗi như vậy. Và đã fix được ngon lành. Một lỗi nữa là về webhook, nó phải là cái sub-domain của thằng n8n chứ không phải là của wordpress, em bị ngu người nên mắc mãi ở đó
 
+## DEMO cuối cùng
+<img width="606" height="1280" alt="image" src="https://github.com/user-attachments/assets/cdd3f86e-c52f-43fc-b920-a0395cb818e9" />
 
-demo kết quả cuối cùng:
-
-chát với bot:
-
-<img width="471" height="264" alt="image" src="https://github.com/user-attachments/assets/7c439503-63b4-4529-bbec-78fa1d4933d6" />
-
-flow automation của n8n (nhìn bên ngoài):
-
-<img width="1319" height="389" alt="image" src="https://github.com/user-attachments/assets/abbdc5af-952f-4d50-8fba-0cafc7334212" />
-
-
-bài tự động đăng trên wp:
-
-<img width="750" height="817" alt="image" src="https://github.com/user-attachments/assets/4f7c0cec-292f-4973-9eb0-1534189cdb18" />
-
+<img width="1919" height="1021" alt="image" src="https://github.com/user-attachments/assets/3a745c50-357e-42ae-8ce7-0a7aca80e7a3" />
